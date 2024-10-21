@@ -1,0 +1,52 @@
+version: '3.1'
+
+services:
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    image: mariadb
+    volumes:
+      - MD:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: always
+    env_file:
+      - .env
+    networks:
+      ConNet:
+        ipv4_address: 10.10.10.4
+
+  nodejs:
+    build: ./requirements/nodejs
+    container_name: nodejs
+    image: nodejs
+    depends_on:
+      - mariadb
+    volumes:
+      - NJ:/app
+    restart: always
+    env_file:
+      - .env
+    networks:
+      ConNet:
+        ipv4_address: 10.10.10.3
+
+networks:
+  ConNet:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.10.0.0/16
+         gateway: 10.10.0.1
+
+volumes:
+  WP:
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ychahbi/data/NJ
+  MD:
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ychahbi/data/MD
