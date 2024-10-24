@@ -53,7 +53,7 @@ const Register = () => {
                     password,
                     accept
                 });
-    
+                console.log("Response Status is : ", response.status);
                 if (response.data.success) {
                     navigateTo('/dashboard');
                 } else {

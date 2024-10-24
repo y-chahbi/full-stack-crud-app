@@ -2,13 +2,13 @@ all:
 	sudo docker-compose -f srcs/docker-compose.yml up --build
 
 init:
-	sudo mkdir -p /home/ychahbi/data/MD
-	sudo mkdir -p /home/ychahbi/data/NJ
+	sudo mkdir -p /home/youssef/data/MD
+	sudo mkdir -p /home/youssef/data/NJ
 	sudo docker-compose -f srcs/docker-compose.yml up --build
 
 kill: $(clear)
 	sudo docker-compose -f srcs/docker-compose.yml down
-	sudo rm -rf /home/ychahbi/data
+	sudo rm -rf /home/youssef/data
 
 
 run:
@@ -20,3 +20,4 @@ end:
 
 clear: end
 	sudo docker system prune -a
+	sudo docker volume prune

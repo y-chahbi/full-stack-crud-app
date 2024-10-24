@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   mariadb:
@@ -46,9 +46,9 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/ychahbi/data/NJ
+      device: /home/youssef/data/NJ
   MD:
     driver_opts:
       type: none
       o: bind
-      device: /home/ychahbi/data/MD
+      device: /home/youssef/data/MD
