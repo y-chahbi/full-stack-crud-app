@@ -1,11 +1,11 @@
 
 import { NextResponse } from 'next/server';
-import connection from '../../../lib/db';
+import connection from '../../../../lib/db';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 
-
-const usernameRegex = /^[a-z]{8,}$/;
+const usernameRegex = /^[a-z]{6,}$/;
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const strongPasswordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
 
@@ -70,6 +70,11 @@ export async function POST(req: Request) {
                 
             try {
                 const [rows]: [any[], any] = await Newconnection.execute(queryInsert, [username, email, hashedPassword]);
+                const token = jwt.sign({ username: username }, process.env.JWT_SECRET, {
+                    expiresIn: '1h',
+                });
+                return NextResponse.json({ success: true, message: "Registration successful!", token : token});
+
                 console.log('Query result:', rows);
             }
             catch (err) {

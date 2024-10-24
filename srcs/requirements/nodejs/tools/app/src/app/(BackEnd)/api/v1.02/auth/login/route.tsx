@@ -1,16 +1,14 @@
-// File: pages/api/register.ts
 import { NextResponse } from 'next/server';
-import connection from '../../../lib/db';
+import connection from '../../../../lib/db';
 import mysql from 'mysql2/promise';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-
-
-const usernameRegex = /^[a-z]{8,}$/;
+const usernameRegex = /^[a-z]{6,}$/;
 const strongPasswordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
 
-export async function POST(req: Request) {
+export async function POST(req: Request, res:  Response) {
+
     const { username, password } = await req.json();
 
     const validationErrors: string[] = [];
