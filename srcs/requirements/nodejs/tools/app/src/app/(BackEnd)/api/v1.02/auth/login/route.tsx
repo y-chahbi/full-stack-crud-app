@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server';
 import connection from '../../../lib/db';
 import mysql from 'mysql2/promise';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+
 
 const usernameRegex = /^[a-z]{8,}$/;
 const strongPasswordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
@@ -42,7 +45,10 @@ export async function POST(req: Request) {
                     const match = await bcrypt.compare(password, user.password);
                     
                     if (match) {
-                        return NextResponse.json({ success: true, message: "Login successful!" });
+                        const token = jwt.sign({ username: username }, process.env.JWT_SECRET, {
+                            expiresIn: '1h',
+                        });
+                        return NextResponse.json({ success: true, message: "Login successful!", token: token});
                     } else {
                         validationErrors.push("Invalid password");
                         return NextResponse.json({ success: false, errors: validationErrors });
