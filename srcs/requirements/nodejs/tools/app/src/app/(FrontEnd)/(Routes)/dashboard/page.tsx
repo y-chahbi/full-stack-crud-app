@@ -6,7 +6,6 @@ import { useAppSelector } from "../../redux/store";
 
 const dashboard = () => {
     const username = useAppSelector((state) => state.authReducer.value.username);
-    const 
     return (
         <ReduxProvider>
 
