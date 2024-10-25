@@ -1,11 +1,9 @@
-import Body from "./components/Body";
-import { useAppSelector } from "./redux/store";
+"use client"
 
+import Body from "./components/Body";
 
 export default function Home() {
 
-    const username = useAppSelector((state) => state.authReducer.value.username);
-    console.log("The username : ", username);
     return (
         <main>
             <Body/>
