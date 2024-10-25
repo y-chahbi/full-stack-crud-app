@@ -43,6 +43,8 @@ export async function POST(req: Request, res:  Response) {
                     const match = await bcrypt.compare(password, user.password);
                     
                     if (match) {
+                        if (!process.env.JWT_SECRET)
+                            throw  new Error('JWT Secret is not set');
                         const token = jwt.sign({ username: username }, process.env.JWT_SECRET, {
                             expiresIn: '1h',
                         });

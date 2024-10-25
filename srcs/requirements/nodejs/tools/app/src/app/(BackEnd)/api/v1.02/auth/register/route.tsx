@@ -69,13 +69,13 @@ export async function POST(req: Request) {
             }
                 
             try {
+                if (!process.env.JWT_SECRET)
+                    throw  new Error("JWT_SECRET is not set");
                 const [rows]: [any[], any] = await Newconnection.execute(queryInsert, [username, email, hashedPassword]);
                 const token = jwt.sign({ username: username }, process.env.JWT_SECRET, {
                     expiresIn: '1h',
                 });
                 return NextResponse.json({ success: true, message: "Registration successful!", token : token});
-
-                console.log('Query result:', rows);
             }
             catch (err) {
                 console.error('Error during query execution:');

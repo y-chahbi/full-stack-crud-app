@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useState } from "react";
 import axios from 'axios';
 import useNavigation from "../../components/useNavigation";
+import useAlreadylogin from "../../components/useAlreadylogin";
 
 
 const Register = () => {
 
+    useAlreadylogin();
     const {navigateTo} = useNavigation();
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
@@ -53,7 +55,6 @@ const Register = () => {
                     password,
                     accept
                 });
-                console.log("Response Status is : ", response.status);
                 if (response.data.success) {
                     localStorage.setItem('token', response.data.token);
                     navigateTo('/dashboard');
