@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import connection from '../../../../lib/db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import getClient from '@/app/(BackEnd)/lib/redisClient';
 
 
 const usernameRegex = /^[a-z]{6,}$/;
@@ -75,6 +76,12 @@ export async function POST(req: Request) {
                 const token = jwt.sign({ username: username }, process.env.JWT_SECRET, {
                     expiresIn: '1h',
                 });
+                try {
+                    const client = await getClient();
+                    await client.set(username, token);
+                } catch (error) {
+                    console.log("error storying cash", error);
+                }
                 return NextResponse.json({ success: true, message: "Registration successful!", token : token});
             }
             catch (err) {

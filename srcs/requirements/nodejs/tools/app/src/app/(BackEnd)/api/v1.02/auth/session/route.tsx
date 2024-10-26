@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
+import getClient from '@/app/(BackEnd)/lib/redisClient';
 
 export async function POST(req: Request) {
     const { token } = await req.json();
+    const client = await getClient();
     const jwt_secret =  process.env.JWT_SECRET;
     try {
         if (!jwt_secret)
@@ -16,6 +18,10 @@ export async function POST(req: Request) {
                 }
             });
         });
+        const StoredToken = await client.get(decoded as string);
+
+        if (!StoredToken)
+            throw  new Error('Token not found');
 
         return NextResponse.json({ message: "Already logged in", data: decoded }, { status: 200 });
     } catch (err) {

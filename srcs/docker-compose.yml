@@ -33,6 +33,21 @@ services:
       ConNet:
         ipv4_address: 10.10.10.3
 
+
+  redis:
+    build: ./requirements/redis
+    container_name: redis
+    image: redis
+    volumes:
+      - RDS:/var/lib/redis
+    restart: always
+    ports:
+      - 6379:6379
+    env_file:
+      - .env
+    networks:
+      ConNet:
+        ipv4_address: 10.10.10.5
 networks:
   ConNet:
     driver: bridge
@@ -52,3 +67,8 @@ volumes:
       type: none
       o: bind
       device: /home/youssef/data/MD
+  RDS:
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/youssef/data/RDS
