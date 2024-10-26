@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import axios from 'axios';
-import useNavigation from "../../components/useNavigation";
-import useAlreadylogin from "../../components/useAlreadylogin";
+import useAlreadylogin from "@/app/(FrontEnd)/components/useAlreadylogin";
+import useNavigation from "@/app/(FrontEnd)/components/useNavigation";
+
 
 
 
