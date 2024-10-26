@@ -1,11 +1,12 @@
 
 import { NextResponse } from 'next/server';
-import connection from '../../../lib/db';
+import connection from '../../../../lib/db';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import getClient from '@/app/(BackEnd)/lib/redisClient';
 
 
-
-const usernameRegex = /^[a-z]{8,}$/;
+const usernameRegex = /^[a-z]{6,}$/;
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const strongPasswordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
 
@@ -69,8 +70,19 @@ export async function POST(req: Request) {
             }
                 
             try {
+                if (!process.env.JWT_SECRET)
+                    throw  new Error("JWT_SECRET is not set");
                 const [rows]: [any[], any] = await Newconnection.execute(queryInsert, [username, email, hashedPassword]);
-                console.log('Query result:', rows);
+                const token = jwt.sign({ username: username }, process.env.JWT_SECRET, {
+                    expiresIn: '1h',
+                });
+                try {
+                    const client = await getClient();
+                    await client.set(username, token);
+                } catch (error) {
+                    console.log("error storying cash", error);
+                }
+                return NextResponse.json({ success: true, message: "Registration successful!", token : token});
             }
             catch (err) {
                 console.error('Error during query execution:');

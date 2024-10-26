@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { ReduxProvider } from "./redux/featuers/provider";
 
 // const geistSans = localFont({
 //     src: "./fonts/GeistVF.woff",
@@ -24,9 +25,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     return (
         <html lang="en">
             <body>
-                <Navbar/>
-                    {children}
-                <Footer/>
+                <ReduxProvider>
+                    <Navbar/>
+                        {children}
+                    <Footer/>
+                </ReduxProvider>
             </body>
         </html>
     );

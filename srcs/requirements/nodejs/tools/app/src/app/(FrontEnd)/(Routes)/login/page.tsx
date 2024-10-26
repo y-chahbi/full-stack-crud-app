@@ -4,16 +4,24 @@ import Link from "next/link";
 import { useState } from "react";
 import axios from 'axios';
 import useNavigation from "../../components/useNavigation";
+import useAlreadylogin from "../../components/useAlreadylogin";
+
+
+
+
 
 
 const Login = () => {
+
+
+    useAlreadylogin();
 
     const {navigateTo} = useNavigation();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState<string[]>([]);
 
-    const usernameRegex = /^[a-z]{8,}$/;
+    const usernameRegex = /^[a-z]{6,}$/;
     const strongPasswordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
 
     const HandelRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,12 +44,13 @@ const Login = () => {
             setErrors(prev => []);
 
             try {
-                const response = await axios.post('/api/v1.02/login', {
+                const response = await axios.post('/api/v1.02/auth/login', {
                     username,
                     password,
                 });
     
                 if (response.data.success) {
+                    localStorage.setItem('token', response.data.token);
                     navigateTo('/dashboard');
                 } else {
                     setErrors(response.data.errors);

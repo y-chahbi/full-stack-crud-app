@@ -1,3 +1,4 @@
+"use client"
 import ImageIcon from '../data/imageIcon.svg'
 
 
@@ -6,9 +7,32 @@ import ImageIcon from '../data/imageIcon.svg'
 
 
 
+import { jwtDecode, JwtPayload }  from "jwt-decode";
+import  { useDispatch } from "react-redux";
+import { useEffect } from 'react';
+import { logIn } from '../redux/featuers/auth-slice';
+import { AppDispatch } from '../redux/store';
+
+interface CustomJwtPayload extends JwtPayload {
+    username?: string;
+}
+
+
 
 
 const Body = () => {
+    const distpatch = useDispatch<AppDispatch>();
+    
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if  (token) {
+            const decoded = jwtDecode<CustomJwtPayload>(token);
+            console.log("decoded username : ", decoded.username);
+            if (decoded.username)
+                distpatch(logIn(decoded.username));
+        }
+        
+    }, []);
     return (
         <div className="MainSection my-20 w-full flex justify-center flex-col">
             <div className="Tls flex flex-col">

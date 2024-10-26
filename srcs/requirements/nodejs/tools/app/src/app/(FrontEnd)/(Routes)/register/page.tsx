@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useState } from "react";
 import axios from 'axios';
 import useNavigation from "../../components/useNavigation";
+import useAlreadylogin from "../../components/useAlreadylogin";
 
 
 const Register = () => {
 
+    useAlreadylogin();
     const {navigateTo} = useNavigation();
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
@@ -15,7 +17,7 @@ const Register = () => {
     const [accept, setAccept] = useState(false);
     const [errors, setErrors] = useState<string[]>([]);
 
-    const usernameRegex = /^[a-z]{8,}$/;
+    const usernameRegex = /^[a-z]{6,}$/;
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     const strongPasswordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
 
@@ -47,14 +49,14 @@ const Register = () => {
             setErrors(prev => []);
 
             try {
-                const response = await axios.post('/api/v1.02/register', {
+                const response = await axios.post('/api/v1.02/auth/register', {
                     username,
                     email,
                     password,
                     accept
                 });
-                console.log("Response Status is : ", response.status);
                 if (response.data.success) {
+                    localStorage.setItem('token', response.data.token);
                     navigateTo('/dashboard');
                 } else {
                     setErrors(response.data.errors);

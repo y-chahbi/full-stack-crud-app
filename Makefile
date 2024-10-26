@@ -4,6 +4,7 @@ all:
 init:
 	sudo mkdir -p /home/youssef/data/MD
 	sudo mkdir -p /home/youssef/data/NJ
+	sudo mkdir -p /home/youssef/data/RDS
 	sudo docker-compose -f srcs/docker-compose.yml up --build
 
 kill: $(clear)
