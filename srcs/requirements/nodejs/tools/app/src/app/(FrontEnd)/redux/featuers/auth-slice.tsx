@@ -2,16 +2,6 @@ import { createSlice , PayloadAction} from "@reduxjs/toolkit"
 
 
 
-
-
-
-
-
-type initialState = {
-    value : AuthState;
-}
-
-
 type AuthState = {
     isAuth: boolean;
     username : string;
@@ -19,6 +9,9 @@ type AuthState = {
     isModerator: boolean;
 }
 
+type initialState = {
+    value : AuthState;
+}
 
 const initialState = {
     value: {
