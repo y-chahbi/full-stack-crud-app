@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { logIn } from './redux/featuers/auth-slice';
 import { AppDispatch } from './redux/store';
 import { UploadSection } from "./components/UploadSection";
+import { HowToUse } from "./components/HowToUse";
+import { WhyUseOurServes } from "./components/WhyUseOurServes";
 
 interface CustomJwtPayload extends JwtPayload {
     username?: string;
@@ -31,6 +33,8 @@ export default function Home() {
     return (
         <div className="Home bg-[var(--tertiary-second-color)]">
             <UploadSection/>
+            <HowToUse/>
+            <WhyUseOurServes/>
         </div>
     );
 }
